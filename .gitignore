@@ -1,0 +1,42 @@
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node.js / Frontend
+node_modules/
+npm-debug.log
+yarn-error.log
+Frontend/node_modules/
+Frontend/build/
+Frontend/dist/
+
+# Java / Spring Boot Backend
+Backend/target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# Python / ML
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env
+.venv/
+ML-Model/venv/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Large Datasets / Binaries (Optional but recommended)
+# *.csv
+*.pkl
+# *.h5
