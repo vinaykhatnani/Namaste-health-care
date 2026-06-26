@@ -1,0 +1,16 @@
+{
+  "fever": ["Blood Test", "CBC", "Malaria Smear"],
+  "chest pain": ["ECG", "Troponin Test", "Chest X-ray"],
+  "breast lump": ["Mammography", "Biopsy", "Ultrasound"],
+  "cough": ["Chest X-ray", "Sputum Culture"],
+  "headache": ["MRI Brain", "CT Scan"],
+  "abdominal pain": ["USG Abdomen", "Liver Function Test"],
+  "vomiting": ["Electrolyte Panel"],
+  "diarrhoea": ["Stool Culture", "Electrolyte Panel"],
+  "jaundice": ["Liver Function Test", "Bilirubin Test"],
+  "joint pain": ["X-ray", "Rheumatoid Factor"],
+  "bleeding": ["Complete Blood Count", "Coagulation Profile"],
+  "breathlessness": ["Chest X-ray", "Spirometry", "ECG"],
+  "paralysis": ["MRI Brain", "Neurological Exam"],
+  "fracture": ["X-ray", "CT Scan"]
+}

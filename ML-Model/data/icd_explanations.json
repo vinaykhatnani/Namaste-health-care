@@ -1,0 +1,10 @@
+{
+  "2C61": {
+    "description": "Malignant neoplasm of breast",
+    "usage": "Used globally for breast cancer diagnosis, insurance claims, oncology reporting, and mortality statistics"
+  },
+  "1A00": {
+    "description": "Cholera due to Vibrio cholerae",
+    "usage": "Used for infectious disease tracking and epidemiological reporting"
+  }
+}

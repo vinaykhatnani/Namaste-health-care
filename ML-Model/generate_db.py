@@ -1,0 +1,161 @@
+import json
+
+# A massively expanded, highly robust medical knowledge base
+# Each entry includes multiple rich synonyms to capture real-world patient language.
+db = [
+    # Infectious Diseases
+    {"icd_code": "1A00", "disease": "Cholera", "description": "severe watery diarrhoea dehydration vomiting rice water stool muscle cramps leg cramps"},
+    {"icd_code": "1A40", "disease": "Typhoid Fever", "description": "prolonged fever headache abdominal pain rose spots constipation diarrhoea stomach ache high temp"},
+    {"icd_code": "1B10", "disease": "Tuberculosis of Lung", "description": "chronic cough blood in sputum weight loss night sweats fever fatigue coughing up blood tb chest pain"},
+    {"icd_code": "1C10", "disease": "Malaria", "description": "intermittent fever chills rigors sweating headache splenomegaly shivering mosquito bite"},
+    {"icd_code": "1E30", "disease": "Dengue Fever", "description": "high fever severe headache pain behind eyes joint pain muscle pain rash bleeding bone breaking pain"},
+    {"icd_code": "1F00", "disease": "Fungal Skin Infection", "description": "itching ring shaped rash scaling skin redness fungal patches ringworm jock itch athlete foot"},
+    {"icd_code": "1D81", "disease": "COVID-19", "description": "fever dry cough loss of taste loss of smell fatigue breathlessness shortness of breath sore throat body aches"},
+    {"icd_code": "1E90", "disease": "Rabies", "description": "dog bite animal bite fever headache excess salivation muscle spasms confusion fear of water hydrophobia"},
+    
+    # Neoplasms
+    {"icd_code": "2B60", "disease": "Malignant Neoplasm of Stomach", "description": "weight loss appetite loss vomiting blood abdominal mass epigastric pain stomach cancer tumor"},
+    {"icd_code": "2C60", "disease": "Malignant Neoplasm of Breast", "description": "breast lump painless mass nipple discharge skin changes retraction breast cancer breast tumor carcinoma"},
+    {"icd_code": "2C25", "disease": "Malignant Neoplasm of Lung", "description": "chronic cough coughing blood weight loss chest pain shortness of breath lung cancer smoking tumor"},
+    {"icd_code": "2E62", "disease": "Malignant Neoplasm of Colon", "description": "blood in stool rectal bleeding change in bowel habits weight loss abdominal pain colon cancer"},
+
+    # Blood & Immune
+    {"icd_code": "3A00", "disease": "Iron Deficiency Anaemia", "description": "fatigue pallor weakness shortness of breath dizziness brittle nails spoon nails low hemoglobin pale skin"},
+    {"icd_code": "3B00", "disease": "Haemolytic Anaemia", "description": "jaundice dark urine fatigue pallor splenomegaly anaemia low blood count yellow skin"},
+    {"icd_code": "4A40", "disease": "Autoimmune Disease", "description": "fatigue joint pain rash fever swollen glands immune system attack lupus"},
+
+    # Endocrine & Metabolic
+    {"icd_code": "5A10", "disease": "Type 1 Diabetes Mellitus", "description": "excessive thirst polyuria weight loss fatigue blurred vision ketoacidosis juvenile diabetes insulin"},
+    {"icd_code": "5A11", "disease": "Type 2 Diabetes Mellitus", "description": "increased thirst frequent urination fatigue blurred vision slow healing wounds adult onset diabetes high blood sugar"},
+    {"icd_code": "5A00", "disease": "Thyrotoxicosis / Hyperthyroidism", "description": "weight loss tremor palpitations heat intolerance sweating anxiety goitre overactive thyroid high heart rate"},
+    {"icd_code": "5A01", "disease": "Hypothyroidism", "description": "weight gain fatigue cold intolerance constipation dry skin hair loss goitre underactive thyroid sluggish"},
+    {"icd_code": "5B80", "disease": "Obesity", "description": "excess body weight increased body mass index fatigue joint pain difficulty breathing overweight fat"},
+    {"icd_code": "5B00", "disease": "Malnutrition", "description": "weight loss weakness fatigue muscle wasting poor growth nutritional deficiency undernourished"},
+    {"icd_code": "5B20", "disease": "Vitamin Deficiency", "description": "weakness fatigue bleeding gums poor wound healing anaemia bone pain rickets scurvy"},
+
+    # Mental Health
+    {"icd_code": "6A00", "disease": "Depressive Disorder", "description": "persistent sadness loss of interest fatigue sleep disturbance weight change hopelessness suicidal thoughts depression unmotivated"},
+    {"icd_code": "6A01", "disease": "Generalised Anxiety Disorder", "description": "excessive worry restlessness fatigue difficulty concentrating muscle tension sleep disturbance irritability panic"},
+    {"icd_code": "6A02", "disease": "Obsessive Compulsive Disorder", "description": "intrusive thoughts compulsive repetitive behaviours anxiety obsessions rituals ocd"},
+    {"icd_code": "6B40", "disease": "Post-Traumatic Stress Disorder", "description": "flashbacks nightmares anxiety avoidance hypervigilance trauma related distress ptsd panic attacks"},
+    {"icd_code": "6C40", "disease": "Insomnia Disorder", "description": "difficulty falling asleep staying asleep early awakening daytime fatigue poor sleep quality sleeplessness unable to sleep"},
+    {"icd_code": "6E20", "disease": "Schizophrenia", "description": "hallucinations delusions disorganized thinking poor hygiene hearing voices paranoia"},
+    {"icd_code": "6A60", "disease": "Bipolar Disorder", "description": "mood swings manic episodes depressive episodes hyperactivity racing thoughts erratic behavior"},
+
+    # Nervous System
+    {"icd_code": "8A00", "disease": "Epilepsy", "description": "seizures convulsions loss of consciousness involuntary movements foaming at mouth fits"},
+    {"icd_code": "8A20", "disease": "Migraine", "description": "severe one sided headache nausea vomiting sensitivity to light sound throbbing pain aura pounding head"},
+    {"icd_code": "8A80", "disease": "Parkinson Disease", "description": "tremor rigidity bradykinesia postural instability shuffling gait masked face shaking slow movement"},
+    {"icd_code": "8A03", "disease": "Trigeminal Neuralgia", "description": "sudden severe facial pain electric shock like pain jaw cheek teeth triggered by touch face shock"},
+    {"icd_code": "8B00", "disease": "Cerebral Infarction / Stroke", "description": "sudden weakness numbness one side face arm leg speech difficulty vision loss headache paralysis brain attack"},
+    {"icd_code": "8B10", "disease": "Transient Ischaemic Attack", "description": "temporary weakness numbness speech difficulty vision loss resolving within hours mini stroke tia"},
+    {"icd_code": "8C00", "disease": "Facial Nerve Palsy (Bell Palsy)", "description": "sudden one sided facial weakness drooping mouth inability to close eye drooling taste loss bell's palsy"},
+    {"icd_code": "8D00", "disease": "Sciatica", "description": "pain radiating from lower back to leg along sciatic nerve numbness tingling weakness leg pain shooting"},
+    {"icd_code": "8E00", "disease": "Peripheral Neuropathy", "description": "numbness tingling burning pain in hands feet weakness loss of sensation nerve damage pins and needles"},
+    {"icd_code": "8C22", "disease": "Carpal Tunnel Syndrome", "description": "wrist pain hand numbness tingling dropping objects wrist weakness median nerve compression"},
+
+    # Eye & Ear
+    {"icd_code": "9A00", "disease": "Conjunctivitis", "description": "red eye discharge watering itching swollen conjunctiva pink eye crusty eyes"},
+    {"icd_code": "9B10", "disease": "Cataract", "description": "progressive vision loss cloudy lens blurred vision difficulty with glare poor night vision"},
+    {"icd_code": "9B20", "disease": "Glaucoma", "description": "increased eye pressure vision loss tunnel vision eye pain headache blind spots"},
+    {"icd_code": "AB00", "disease": "Otitis Media", "description": "ear pain hearing loss discharge from ear fever tinnitus ear fullness ear infection fluid in ear"},
+    {"icd_code": "AB30", "disease": "Hearing Loss", "description": "difficulty hearing speech reduced hearing deafness ringing in ear deaf"},
+    {"icd_code": "AA30", "disease": "Tinnitus", "description": "ringing in ears buzzing sound whistling hissing hearing noise"},
+
+    # Circulatory
+    {"icd_code": "BA00", "disease": "Hypertensive Heart Disease", "description": "high blood pressure headache chest pain shortness of breath dizziness palpitations hbp"},
+    {"icd_code": "BA01", "disease": "Essential Hypertension", "description": "high blood pressure headache dizziness blurred vision nosebleeds fatigue silent killer"},
+    {"icd_code": "BA40", "disease": "Ischaemic Heart Disease", "description": "chest pain angina shortness of breath sweating pain in arm jaw blocked arteries heart disease"},
+    {"icd_code": "BA41", "disease": "Acute Myocardial Infarction", "description": "severe chest pain radiating to arm jaw shortness of breath sweating nausea heart attack"},
+    {"icd_code": "BA80", "disease": "Heart Failure", "description": "shortness of breath fatigue swelling legs ankles rapid heartbeat cough lying down fluid in lungs congestive"},
+    {"icd_code": "BB00", "disease": "Pericarditis", "description": "chest pain worse on inspiration leaning forward fever pericardial friction rub inflamed heart"},
+    {"icd_code": "BD10", "disease": "Varicose Veins", "description": "swollen twisted veins leg heaviness aching pain leg cramps itching bulging veins"},
+    {"icd_code": "BB90", "disease": "Cardiac Arrhythmia", "description": "irregular heartbeat palpitations dizziness fainting chest discomfort shortness of breath skipping beats"},
+
+    # Respiratory
+    {"icd_code": "CA00", "disease": "Acute Upper Respiratory Infection", "description": "sore throat runny nose sneezing cough mild fever malaise common cold urti"},
+    {"icd_code": "CA07", "disease": "Acute Sinusitis", "description": "facial pain pressure nasal congestion discharge headache fever sinus infection stuffy nose"},
+    {"icd_code": "CA08", "disease": "Acute Pharyngitis", "description": "sore throat pain swallowing fever swollen tonsils redness strep throat tonsillitis"},
+    {"icd_code": "CA20", "disease": "Acute Bronchitis", "description": "cough mucus production chest discomfort mild fever fatigue sore throat chest cold phlegm"},
+    {"icd_code": "CA40", "disease": "Influenza", "description": "fever high temperature cough body aches headache fatigue chills sore throat runny nose flu virus"},
+    {"icd_code": "CA80", "disease": "Pneumonia", "description": "high fever cough productive sputum chest pain shortness of breath chills fatigue lung infection"},
+    {"icd_code": "CB01", "disease": "Chronic Obstructive Pulmonary Disease", "description": "chronic cough breathlessness wheezing sputum production chest tightness copd emphysema smokers cough"},
+    {"icd_code": "CA21", "disease": "Asthma", "description": "wheezing shortness of breath chest tightness cough especially at night exercise asthma attack"},
+    {"icd_code": "CB20", "disease": "Pleural Effusion", "description": "shortness of breath chest pain reduced breath sounds dullness to percussion fluid around lungs"},
+
+    # Digestive
+    {"icd_code": "DA00", "disease": "Gastritis", "description": "stomach pain burning sensation upper abdomen nausea vomiting bloating indigestion upset stomach"},
+    {"icd_code": "DA20", "disease": "Gastric Ulcer", "description": "burning stomach pain worse after eating nausea vomiting blood weight loss peptic ulcer"},
+    {"icd_code": "DA23", "disease": "Duodenal Ulcer", "description": "burning stomach pain better after eating hunger pain night pain nausea intestinal ulcer"},
+    {"icd_code": "DA40", "disease": "Appendicitis", "description": "right lower abdominal pain nausea vomiting fever loss of appetite sharp stomach pain appendix"},
+    {"icd_code": "DA90", "disease": "Irritable Bowel Syndrome", "description": "abdominal pain cramping bloating diarrhoea constipation alternating bowel habits ibs spastic colon"},
+    {"icd_code": "DA93", "disease": "Intestinal Obstruction", "description": "severe abdominal pain vomiting constipation distension inability to pass gas blocked intestines"},
+    {"icd_code": "DB10", "disease": "Cirrhosis of Liver", "description": "jaundice abdominal swelling ascites fatigue weight loss spider angioma liver failure alcohol"},
+    {"icd_code": "DB30", "disease": "Hepatitis", "description": "jaundice fatigue abdominal pain dark urine nausea loss of appetite liver inflammation yellow skin"},
+    {"icd_code": "DB50", "disease": "Cholelithiasis (Gallstones)", "description": "right upper abdominal pain after eating nausea vomiting fatty food intolerance gall bladder stones"},
+    {"icd_code": "DB90", "disease": "Acute Pancreatitis", "description": "severe epigastric pain radiating to back nausea vomiting fever abdominal tenderness inflamed pancreas"},
+    {"icd_code": "DA70", "disease": "Haemorrhoids", "description": "rectal bleeding pain during defecation swelling around anus itching mucous discharge prolapse piles"},
+    {"icd_code": "DA73", "disease": "Rectal Prolapse", "description": "protrusion of rectum through anus mucous discharge faecal incontinence rectal mass"},
+    {"icd_code": "DA94", "disease": "Diarrhoeal Disease", "description": "frequent loose watery stools abdominal cramps dehydration nausea vomiting diarrhea food poisoning"},
+    {"icd_code": "DA95", "disease": "Dysentery", "description": "bloody diarrhoea abdominal pain fever tenesmus mucus in stool blood in stool infection"},
+    {"icd_code": "ME03", "disease": "Hernia", "description": "bulge in abdomen or groin pain with straining lifting coughing heaviness inguinal hernia"},
+    {"icd_code": "DD70", "disease": "Gastroesophageal Reflux Disease", "description": "heartburn acid reflux chest burning burping regurgitation sour taste in mouth gerd"},
+
+    # Skin
+    {"icd_code": "EA00", "disease": "Dermatitis / Eczema", "description": "itching redness swelling dry cracked skin rash blisters oozing itchy rash"},
+    {"icd_code": "EA10", "disease": "Psoriasis", "description": "red scaly patches silvery scales itching skin thickening joint pain flaky skin"},
+    {"icd_code": "EA20", "disease": "Urticaria (Hives)", "description": "raised itchy welts red blotches swelling allergic reaction skin allergy"},
+    {"icd_code": "EA80", "disease": "Vitiligo", "description": "white patches on skin loss of pigmentation depigmentation light spots on skin"},
+    {"icd_code": "EA90", "disease": "Acne", "description": "pimples blackheads whiteheads oily skin facial lesions scarring zits breakouts"},
+    {"icd_code": "EB00", "disease": "Cellulitis", "description": "red swollen warm skin spreading redness pain fever skin infection bacterial"},
+    {"icd_code": "EB01", "disease": "Erysipelas", "description": "bright red raised skin lesion sharply demarcated fever chills skin infection"},
+    {"icd_code": "ED00", "disease": "Alopecia", "description": "hair loss baldness patchy hair loss thinning of hair scalp receding hairline"},
+    {"icd_code": "EA14", "disease": "Scabies", "description": "severe itching at night small red bumps burrow lines contagious skin infection bug bites"},
+
+    # Musculoskeletal
+    {"icd_code": "FA00", "disease": "Osteoarthritis", "description": "joint pain stiffness swelling reduced range of motion especially knees hips hands morning stiffness wear and tear"},
+    {"icd_code": "FA01", "disease": "Rheumatoid Arthritis", "description": "joint pain swelling stiffness morning stiffness symmetrical joints fatigue fever auto immune"},
+    {"icd_code": "FA02", "disease": "Gout", "description": "sudden severe joint pain redness swelling warmth typically big toe uric acid gouty attack"},
+    {"icd_code": "FA20", "disease": "Cervical Spondylosis", "description": "neck pain stiffness headache pain radiating to arms numbness tingling neck arthritis"},
+    {"icd_code": "FA24", "disease": "Lumbar Spondylosis", "description": "lower back pain stiffness pain radiating to legs numbness sciatica lumbar arthritis"},
+    {"icd_code": "FA70", "disease": "Osteoporosis", "description": "bone weakness fractures loss of height stooped posture back pain brittle bones weak bones"},
+    {"icd_code": "FA90", "disease": "Myalgia (Muscle Pain)", "description": "muscle pain aching soreness tenderness stiffness overuse or injury body ache"},
+    {"icd_code": "FB00", "disease": "Frozen Shoulder", "description": "shoulder pain stiffness restricted movement difficulty raising arm gradual onset stiff shoulder"},
+    {"icd_code": "FC00", "disease": "Low Back Pain", "description": "lower back pain muscle spasm stiffness difficulty bending standing walking lumbago"},
+    {"icd_code": "FC01", "disease": "Intervertebral Disc Disorder", "description": "back pain leg pain sciatica numbness tingling weakness disc herniation slipped disc"},
+
+    # Genitourinary
+    {"icd_code": "GA00", "disease": "Acute Kidney Injury", "description": "reduced urine output swelling fatigue nausea confusion kidney failure aki"},
+    {"icd_code": "GA10", "disease": "Chronic Kidney Disease", "description": "fatigue swelling nausea loss of appetite itching muscle cramps kidney failure ckd dialysis"},
+    {"icd_code": "GB00", "disease": "Urinary Tract Infection", "description": "burning urination frequent urination urgency cloudy urine lower abdominal pain fever uti pee pain"},
+    {"icd_code": "GB40", "disease": "Urolithiasis (Kidney Stones)", "description": "severe flank pain radiating to groin blood in urine nausea vomiting urinary urgency renal colic"},
+    {"icd_code": "GB60", "disease": "Urinary Retention", "description": "inability to urinate lower abdominal distension pain discomfort bladder fullness cant pee"},
+    {"icd_code": "GC00", "disease": "Benign Prostatic Hyperplasia", "description": "frequent urination weak urinary stream difficulty starting urination nocturia incomplete emptying enlarged prostate bph"},
+    {"icd_code": "GA30", "disease": "Nephrotic Syndrome", "description": "swelling around eyes legs frothy urine protein in urine weight gain fatigue kidney leak"},
+    {"icd_code": "GC70", "disease": "Erectile Dysfunction", "description": "inability to achieve or maintain erection sexual dysfunction decreased libido ed impotence"},
+
+    # Female Reproductive
+    {"icd_code": "GA80", "disease": "Amenorrhoea", "description": "absence of menstruation missed periods no menstrual cycle hormonal imbalance absent period"},
+    {"icd_code": "GA81", "disease": "Dysmenorrhoea", "description": "painful menstruation menstrual cramps lower abdominal pain during periods pelvic pain period cramps"},
+    {"icd_code": "GA82", "disease": "Menorrhagia", "description": "heavy menstrual bleeding prolonged periods excessive blood loss during menstruation heavy periods"},
+    {"icd_code": "GA91", "disease": "Polycystic Ovary Syndrome", "description": "irregular periods weight gain facial hair acne infertility hormonal imbalance pcos"},
+    {"icd_code": "JA00", "disease": "Complications of Pregnancy", "description": "pregnancy complications nausea vomiting gestational diabetes pre-eclampsia bleeding"},
+
+    # General / Other
+    {"icd_code": "MG20", "disease": "Fever of Unknown Origin", "description": "persistent fever unknown cause prolonged temperature elevation undiagnosed fever fuo"},
+    {"icd_code": "MG22", "disease": "Fatigue / Malaise", "description": "tiredness exhaustion weakness lack of energy lethargy general unwellness worn out"},
+    {"icd_code": "MG30", "disease": "Syncope / Fainting", "description": "loss of consciousness fainting dizziness lightheadedness blackout transient passing out"},
+    {"icd_code": "MG40", "disease": "Oedema / Swelling", "description": "swelling fluid retention puffiness limbs face generalised oedema water retention"},
+    {"icd_code": "MG43", "disease": "Lymphadenopathy", "description": "swollen lymph nodes enlarged glands neck armpit groin tender nodes lumps"},
+    {"icd_code": "MG31", "disease": "Chronic Pain Syndrome", "description": "persistent pain lasting months widespread pain disability fatigue sleep disturbance"},
+    {"icd_code": "MG32", "disease": "Headache Disorder", "description": "recurrent headache tension type headache frontal temporal pain pressure heaviness head hurting"},
+    {"icd_code": "NE61", "disease": "Poisoning", "description": "vomiting abdominal pain altered consciousness ingestion of toxic substance toxic"},
+    {"icd_code": "NA00", "disease": "Fracture", "description": "bone fracture pain swelling deformity inability to move injured part broken bone"},
+    {"icd_code": "NF00", "disease": "Burn Injury", "description": "skin burn blisters redness pain scalding heat injury fire burn"},
+    {"icd_code": "MF50", "disease": "Allergy", "description": "sneezing itchy eyes runny nose hives rash swelling anaphylaxis allergic reaction"},
+]
+
+with open("D:/namaste-health-system/ML-Model/data/icd_symptom_database.json", "w") as f:
+    json.dump(db, f, indent=4)
+
+print(f"Successfully wrote {len(db)} rich disease profiles to database.")

@@ -40,3 +40,5 @@ Thumbs.db
 # *.csv
 *.pkl
 # *.h5
+
+scratch/
